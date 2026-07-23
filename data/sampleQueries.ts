@@ -124,9 +124,29 @@ export const SAMPLE_QUERIES: PresetQuery[] = [
         }
       },
       {
+        nodeId: 'verification-agent',
+        activeNodeIds: ['verification-agent'],
+        activeTransitions: [{ from: 'synthesis-agent', to: 'verification-agent' }],
+        title: 'Verification Agent',
+        badge: 'FACT-CHECK',
+        caption: 'Checking the answer against the real database/documents before showing it',
+        logs: [
+          'Cross-referencing fee amounts with MySQL: college_fees rows...',
+          'All 4 claims verified against source data ✓'
+        ],
+        payloadSummary: {
+          type: 'verification',
+          metrics: [
+            { label: 'Claims Checked', value: '4 / 4 Verified' },
+            { label: 'Source Match', value: '100% — No corrections needed' },
+            { label: 'Confidence', value: 'High (all values exact-match DB)' }
+          ]
+        }
+      },
+      {
         nodeId: 'chat-ui',
         activeNodeIds: ['chat-ui'],
-        activeTransitions: [{ from: 'synthesis-agent', to: 'chat-ui' }],
+        activeTransitions: [{ from: 'verification-agent', to: 'chat-ui' }],
         title: 'Chat UI',
         badge: 'RESPONSE INTERFACE',
         caption: 'Delivers verified fee structure breakdown in clean natural text to user interface.',
@@ -272,13 +292,36 @@ export const SAMPLE_QUERIES: PresetQuery[] = [
         ]
       },
       {
+        nodeId: 'verification-agent',
+        activeNodeIds: ['verification-agent'],
+        activeTransitions: [{ from: 'synthesis-agent', to: 'verification-agent' }],
+        title: 'Verification Agent',
+        badge: 'FACT-CHECK',
+        isVerificationCorrection: true,
+        caption: 'Found a claim not in the source data — correcting it',
+        logs: [
+          'Cross-referencing policy claims with PDF chunk evidence...',
+          '⚠ Claim "below 65% students must repeat the course during summer term" — NOT found in retrieved chunks!',
+          'Correction: Replacing unsupported consequence with verified text from Section 3.5'
+        ],
+        payloadSummary: {
+          type: 'verification',
+          metrics: [
+            { label: 'Claims Checked', value: '3 / 3' },
+            { label: 'Issues Found', value: '1 unsupported claim detected' },
+            { label: 'Action Taken', value: 'Auto-corrected from Section 3.5' },
+            { label: 'Confidence', value: 'High (after correction)' }
+          ]
+        }
+      },
+      {
         nodeId: 'chat-ui',
         activeNodeIds: ['chat-ui'],
-        activeTransitions: [{ from: 'synthesis-agent', to: 'chat-ui' }],
+        activeTransitions: [{ from: 'verification-agent', to: 'chat-ui' }],
         title: 'Chat UI',
         badge: 'RESPONSE INTERFACE',
-        caption: "Displays official college attendance policy guidelines in Chat UI.",
-        logs: ['Render complete']
+        caption: "Displays verified and corrected attendance policy guidelines in Chat UI.",
+        logs: ['Render complete (1 claim corrected by Verification Agent)']
       }
     ],
     finalAnswer: {
@@ -436,11 +479,35 @@ export const SAMPLE_QUERIES: PresetQuery[] = [
           ]
         }
       },
-      // STEP 7: Synthesis Agent to Chat UI
+      // STEP 7: Synthesis Agent to Verification Agent
+      {
+        nodeId: 'verification-agent',
+        activeNodeIds: ['verification-agent'],
+        activeTransitions: [{ from: 'synthesis-agent', to: 'verification-agent' }],
+        title: 'Verification Agent',
+        badge: 'FACT-CHECK',
+        caption: 'Checking the answer against the real database/documents before showing it',
+        logs: [
+          'Cross-referencing attendance percentage with MySQL: student_attendance...',
+          'Cross-referencing policy threshold with PDF chunk evidence...',
+          'Mathematical comparison (78.5% > 75.0%) verified ✓',
+          'All claims verified against dual sources ✓'
+        ],
+        payloadSummary: {
+          type: 'verification',
+          metrics: [
+            { label: 'Claims Checked', value: '3 / 3 Verified' },
+            { label: 'Math Verification', value: '78.5% > 75.0% confirmed' },
+            { label: 'Dual Source Match', value: 'MySQL ✓ + Vector DB ✓' },
+            { label: 'Confidence', value: 'High (all values exact-match)' }
+          ]
+        }
+      },
+      // STEP 8: Verification Agent to Chat UI
       {
         nodeId: 'chat-ui',
         activeNodeIds: ['chat-ui'],
-        activeTransitions: [{ from: 'synthesis-agent', to: 'chat-ui' }],
+        activeTransitions: [{ from: 'verification-agent', to: 'chat-ui' }],
         title: 'Chat UI',
         badge: 'RESPONSE INTERFACE',
         caption: 'Delivers verified comparative answer to Chat UI.',

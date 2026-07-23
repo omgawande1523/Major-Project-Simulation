@@ -148,6 +148,22 @@ export const NODE_INFO_DATA: Record<NodeId, NodeInfoDetail> = {
       'Formatting bullet points and table layouts'
     ]
   },
+  'verification-agent': {
+    id: 'verification-agent',
+    name: 'Verification Agent',
+    badge: 'FACT-CHECK LAYER',
+    roleSummary: 'Cross-references the synthesized answer against original source data before delivery.',
+    description: 'Acts as a final quality gate: re-checks every factual claim in the generated response against the raw database records and retrieved document chunks. If a claim cannot be traced to a source, the agent flags and corrects it before the answer reaches the user.',
+    techStack: 'Claim-Evidence Alignment Model + Source Trace Index',
+    inputs: 'Synthesized answer text + Original source data (MySQL rows / PDF chunks).',
+    outputs: 'Verified (or corrected) final answer with confidence annotations.',
+    keyResponsibilities: [
+      'Claim-level fact verification against source documents',
+      'Detects and corrects hallucinated or unsupported statements',
+      'Annotates answer confidence per claim',
+      'Ensures every number and policy quote traces back to a real source'
+    ]
+  },
   'chat-ui': {
     id: 'chat-ui',
     name: 'Chat UI',

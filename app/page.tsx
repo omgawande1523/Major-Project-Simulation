@@ -380,11 +380,27 @@ export default function SimulationPage() {
               />
             </div>
 
-            {/* TIER 5: Output Channel */}
+            {/* TIER 5: Verification Agent */}
+            <div className="flex justify-center z-10">
+              <FlowNode
+                id="verification-agent"
+                title="9. Verification Agent"
+                subtitle="Fact-Check Layer"
+                badge="VERIFY"
+                isActive={isNodeActive('verification-agent')}
+                isVisited={visitedNodes.has('verification-agent')}
+                isVerificationCorrection={isNodeActive('verification-agent') && !!activeStep?.isVerificationCorrection}
+                caption={isNodeActive('verification-agent') ? activeStep?.caption : undefined}
+                onInfoClick={() => setActiveInfoModal(NODE_INFO_DATA['verification-agent'])}
+                isDarkMode={isDarkMode}
+              />
+            </div>
+
+            {/* TIER 6: Output Channel */}
             <div className="flex justify-center z-10">
               <FlowNode
                 id="chat-ui"
-                title="9. Chat UI"
+                title="10. Chat UI"
                 subtitle="Output Interface"
                 badge="OUTPUT"
                 isActive={isNodeActive('chat-ui')}

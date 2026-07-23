@@ -7,6 +7,7 @@ export type NodeId =
   | 'sql-agent'
   | 'rag-agent'
   | 'synthesis-agent'
+  | 'verification-agent'
   | 'local-llm'
   | 'chat-ui';
 
@@ -27,9 +28,10 @@ export interface StepDetail {
   badge?: string;
   isParallel?: boolean;
   isWaiting?: boolean; // Synthesis waiting state
+  isVerificationCorrection?: boolean; // Verification agent found an issue and is correcting
   logs?: string[];
   payloadSummary?: {
-    type: 'sql' | 'rag' | 'router' | 'llm' | 'synthesis' | 'sync';
+    type: 'sql' | 'rag' | 'router' | 'llm' | 'synthesis' | 'sync' | 'verification';
     codeSnippet?: string;
     metrics?: Array<{ label: string; value: string }>;
     retrievedDocs?: Array<{ title: string; score: string; text: string }>;

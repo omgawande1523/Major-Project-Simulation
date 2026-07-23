@@ -24,7 +24,8 @@ const STATIC_CONNECTIONS: Array<[NodeId, NodeId]> = [
   ['sql-agent', 'local-llm'],
   ['rag-agent', 'local-llm'],
   ['local-llm', 'synthesis-agent'],
-  ['synthesis-agent', 'chat-ui'],
+  ['synthesis-agent', 'verification-agent'],
+  ['verification-agent', 'chat-ui'],
 ];
 
 export const ConnectionLines: React.FC<ConnectionLinesProps> = ({
